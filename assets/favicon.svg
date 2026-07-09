@@ -1,15 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <style>
-      .ear-outer { fill: #ffd3e8; stroke: #ff5fa2; stroke-width: 2; }
+      .bg { fill: #ffd3e8; }
+      .ear-outer { fill: #ffffff; stroke: #ff5fa2; stroke-width: 2; }
       .ear-inner { fill: #ff8fc0; }
-      .head { fill: #ffd3e8; stroke: #ff5fa2; stroke-width: 2; }
+      .head { fill: #ffffff; stroke: #ff5fa2; stroke-width: 2; }
       .blindfold { fill: #8fd0e8; stroke: #5aa9c9; stroke-width: 1.5; }
       .bow { fill: #8fd0e8; stroke: #5aa9c9; stroke-width: 1.2; }
       .knot { fill: #5aa9c9; }
       .nose { fill: #ff5fa2; }
     </style>
   </defs>
+
+  <!-- background -->
+  <rect class="bg" x="0" y="0" width="64" height="64" rx="14"/>
 
   <!-- ears -->
   <g transform="rotate(-16 20 16)">

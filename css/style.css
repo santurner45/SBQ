@@ -229,7 +229,7 @@ body.age-gate-locked { overflow: hidden; }
 }
 
 .hero-photo-placeholder svg { width: 72px; height: 72px; }
-.hero-photo-placeholder img { width: 128px; height: 128px; }
+.hero-photo-placeholder img { width: 152px; height: 152px; border-radius: 32px; }
 
 .hero-title {
   font-family: var(--font-display);
