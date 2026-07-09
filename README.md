@@ -1,4 +1,4 @@
-# Her Name — Personal Content Site
+# Sugar Bunny Quinn — Personal Content Site
 
 A one-page site combining a bio/landing page, an about section, a photo gallery,
 a link-in-bio hub, and a contact form. Bubblegum pink, eggshell white, and
