@@ -347,8 +347,16 @@ section { padding: 90px 0; }
   justify-content: center;
   color: var(--text-soft);
   font-weight: 600;
-  border: 2px dashed rgba(255, 143, 192, 0.5);
+  border: 3px solid var(--white);
+  box-shadow: var(--shadow-soft);
   transition: transform 0.25s ease;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .gallery-item:hover { transform: scale(1.03); }
