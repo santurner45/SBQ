@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const ageGate = document.getElementById('ageGate');
+  const ageGateEnter = document.getElementById('ageGateEnter');
+
+  ageGateEnter.addEventListener('click', () => {
+    try {
+      localStorage.setItem('sbq_age_verified', 'true');
+    } catch (e) {}
+    ageGate.hidden = true;
+    document.body.classList.remove('age-gate-locked');
+  });
+
   const navToggle = document.getElementById('navToggle');
   const siteNav = document.getElementById('siteNav');
 

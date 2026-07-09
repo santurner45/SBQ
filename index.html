@@ -4,13 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sugar Bunny Quinn — Content Creator</title>
-<meta name="description" content="Official site — links, gallery, and ways to connect.">
+<meta name="description" content="Official site — links, gallery, and ways to connect. 18+ adults only.">
+<meta name="rating" content="RTA-5042-1996-1400-1577-RTA">
+<meta name="rating" content="adult">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+<div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
+  <div class="age-gate-card">
+    <p class="age-gate-logo">Sugar Bunny Quinn<span class="logo-dot">.</span></p>
+    <h1 id="ageGateTitle" class="age-gate-title">You must be 18+ to enter</h1>
+    <p class="age-gate-text">This site contains adult content and is intended for adults only. By entering, you confirm you are at least 18 years old (or the age of majority in your jurisdiction).</p>
+    <div class="age-gate-actions">
+      <button type="button" class="btn btn-primary" id="ageGateEnter">I'm 18+ &mdash; Enter</button>
+      <a href="https://www.google.com" class="btn btn-outline" id="ageGateExit">Exit</a>
+    </div>
+  </div>
+</div>
+<script>
+  try {
+    if (localStorage.getItem('sbq_age_verified') === 'true') {
+      document.getElementById('ageGate').hidden = true;
+    } else {
+      document.body.classList.add('age-gate-locked');
+    }
+  } catch (e) {}
+</script>
 
 <header class="site-header" id="top">
   <div class="container header-inner">
