@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .ear-outer { fill: #ffd3e8; stroke: #ff5fa2; stroke-width: 2; }
+      .ear-inner { fill: #ff8fc0; }
+      .head { fill: #ffd3e8; stroke: #ff5fa2; stroke-width: 2; }
+      .blindfold { fill: #8fd0e8; stroke: #5aa9c9; stroke-width: 1.5; }
+      .bow { fill: #8fd0e8; stroke: #5aa9c9; stroke-width: 1.2; }
+      .knot { fill: #5aa9c9; }
+      .nose { fill: #ff5fa2; }
+    </style>
+  </defs>
+
+  <!-- ears -->
+  <g transform="rotate(-16 20 16)">
+    <ellipse class="ear-outer" cx="20" cy="16" rx="8" ry="16"/>
+    <ellipse class="ear-inner" cx="20" cy="18" rx="4" ry="10"/>
+  </g>
+  <g transform="rotate(16 44 16)">
+    <ellipse class="ear-outer" cx="44" cy="16" rx="8" ry="16"/>
+    <ellipse class="ear-inner" cx="44" cy="18" rx="4" ry="10"/>
+  </g>
+
+  <!-- head -->
+  <circle class="head" cx="32" cy="38" r="19"/>
+
+  <!-- blindfold -->
+  <g transform="rotate(-4 32 35)">
+    <rect class="blindfold" x="10" y="30" width="44" height="11" rx="5.5"/>
+    <!-- bow on the side -->
+    <path class="bow" d="M54 35.5 L62 30 V41 Z"/>
+    <circle class="knot" cx="54" cy="35.5" r="3"/>
+  </g>
+
+  <!-- nose -->
+  <ellipse class="nose" cx="32" cy="49" rx="2.6" ry="2.1"/>
+</svg>
