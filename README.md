@@ -51,3 +51,4 @@ The site is static (no build step), so it works out of the box with:
 
 - **GitHub Pages** — Settings → Pages → deploy from this branch/root.
 - **Netlify / Vercel** — drag-and-drop the folder or connect the repo.
+
