@@ -99,11 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduceMotion && items.length > 1) {
-      let autoRotate = setInterval(() => goToIndex(currentIndex + 1), 10000);
+      let autoRotate = setInterval(() => goToIndex(currentIndex + 1), 5000);
       const pause = () => clearInterval(autoRotate);
       const resume = () => {
         clearInterval(autoRotate);
-        autoRotate = setInterval(() => goToIndex(currentIndex + 1), 10000);
+        autoRotate = setInterval(() => goToIndex(currentIndex + 1), 5000);
       };
       // Pause on the whole gallery block (not just the scroll area), so
       // moving the mouse onto the arrow buttons or dots doesn't resume
