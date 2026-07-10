@@ -149,11 +149,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contactForm');
   const note = document.getElementById('formNote');
 
+  const CONTACT_EMAIL = 'Sugarbunnyquinn@gmail.com';
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    // Hook this up to a form service (e.g. Formspree, Getform) or your own
-    // backend by setting the form's action/method and removing this handler.
-    note.textContent = "Thanks! I'll get back to you soon 💌";
-    form.reset();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    const subject = `New message from ${name} via the website`;
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    const mailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailtoUrl;
+    note.textContent = "Opening your email app — just hit send! 💌";
   });
 });
