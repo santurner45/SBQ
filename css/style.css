@@ -344,7 +344,7 @@ section { padding: 90px 0; }
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 8px 4px 20px;
+  padding: 8px calc(50% - 130px) 20px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
@@ -523,6 +523,7 @@ section { padding: 90px 0; }
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
   .gallery-item { flex-basis: 220px; }
+  .gallery-carousel { padding-left: calc(50% - 110px); padding-right: calc(50% - 110px); }
   .carousel-arrow { width: 40px; height: 40px; font-size: 1.4rem; }
 
   .site-nav {
@@ -549,6 +550,7 @@ section { padding: 90px 0; }
 
 @media (max-width: 480px) {
   .gallery-item { flex-basis: 74vw; }
+  .gallery-carousel { padding-left: calc(50% - 37vw); padding-right: calc(50% - 37vw); }
   .gallery-carousel-wrap { gap: 6px; }
   section { padding: 64px 0; }
   .hero { padding: 70px 0 90px; }

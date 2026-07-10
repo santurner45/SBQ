@@ -34,15 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (carousel && dotsWrap) {
     const items = Array.from(carousel.children);
+    let currentIndex = 0;
 
     items.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.type = 'button';
       dot.className = 'carousel-dot';
       dot.setAttribute('aria-label', `Go to photo ${i + 1}`);
-      dot.addEventListener('click', () => {
-        items[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      });
+      dot.addEventListener('click', () => { if (!isAnimating) goToIndex(i); });
       dotsWrap.appendChild(dot);
     });
     const dots = Array.from(dotsWrap.children);
@@ -52,43 +51,66 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const closestItemIndex = () => {
-      const center = carousel.scrollLeft + carousel.clientWidth / 2;
+      const carouselCenter = carousel.getBoundingClientRect().left + carousel.clientWidth / 2;
       let best = 0;
       let bestDist = Infinity;
       items.forEach((item, i) => {
-        const itemCenter = item.offsetLeft + item.clientWidth / 2;
-        const dist = Math.abs(itemCenter - center);
+        const rect = item.getBoundingClientRect();
+        const itemCenter = rect.left + rect.width / 2;
+        const dist = Math.abs(itemCenter - carouselCenter);
         if (dist < bestDist) { bestDist = dist; best = i; }
       });
       return best;
     };
 
-    let scrollTimeout;
+    let isAnimating = false;
+    let settleTimer;
+    let fallbackTimer;
+
+    function handleSettled() {
+      isAnimating = false;
+      clearTimeout(fallbackTimer);
+      currentIndex = closestItemIndex();
+      setActiveDot(currentIndex);
+    }
+
+    // Prefer real scroll/scrollend signals to know when settled, but some
+    // browsers don't reliably fire them for scrollIntoView() — so a hard
+    // timeout fallback guarantees we never get stuck mid-animation.
+    carousel.addEventListener('scrollend', handleSettled);
     carousel.addEventListener('scroll', () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => setActiveDot(closestItemIndex()), 100);
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(handleSettled, 150);
     });
 
-    const scrollToIndex = (index) => {
-      const clamped = (index + items.length) % items.length;
-      items[clamped].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    };
+    function goToIndex(index) {
+      currentIndex = (index + items.length) % items.length;
+      isAnimating = true;
+      items[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      setActiveDot(currentIndex);
+      clearTimeout(fallbackTimer);
+      fallbackTimer = setTimeout(handleSettled, 1200);
+    }
 
-    prevBtn.addEventListener('click', () => scrollToIndex(closestItemIndex() - 1));
-    nextBtn.addEventListener('click', () => scrollToIndex(closestItemIndex() + 1));
+    prevBtn.addEventListener('click', () => { if (!isAnimating) goToIndex(currentIndex - 1); });
+    nextBtn.addEventListener('click', () => { if (!isAnimating) goToIndex(currentIndex + 1); });
 
     setActiveDot(0);
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduceMotion && items.length > 1) {
-      let autoRotate = setInterval(() => scrollToIndex(closestItemIndex() + 1), 4000);
+      let autoRotate = setInterval(() => goToIndex(currentIndex + 1), 4000);
       const pause = () => clearInterval(autoRotate);
       const resume = () => {
         clearInterval(autoRotate);
-        autoRotate = setInterval(() => scrollToIndex(closestItemIndex() + 1), 4000);
+        autoRotate = setInterval(() => goToIndex(currentIndex + 1), 4000);
       };
-      ['mouseenter', 'touchstart', 'focusin'].forEach((evt) => carousel.addEventListener(evt, pause));
-      ['mouseleave', 'touchend'].forEach((evt) => carousel.addEventListener(evt, resume));
+      // Pause on the whole gallery block (not just the scroll area), so
+      // moving the mouse onto the arrow buttons or dots doesn't resume
+      // auto-rotate mid-interaction.
+      const galleryBlock = carousel.closest('.gallery') || carousel;
+      ['mouseenter', 'touchstart', 'focusin'].forEach((evt) => galleryBlock.addEventListener(evt, pause));
+      ['mouseleave', 'touchend'].forEach((evt) => galleryBlock.addEventListener(evt, resume));
     }
   }
 
