@@ -27,6 +27,10 @@
   </div>
 </div>
 <script>
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
   try {
     if (localStorage.getItem('sbq_age_verified') === 'true') {
       document.getElementById('ageGate').hidden = true;
@@ -116,6 +120,11 @@
           <div class="gallery-item"><img src="assets/gallery/photo5.jpg" alt="Sugar Bunny Quinn photo 5"></div>
           <div class="gallery-item"><img src="assets/gallery/photo6.jpg" alt="Sugar Bunny Quinn photo 6"></div>
           <div class="gallery-item"><img src="assets/gallery/photo7.jpg" alt="Sugar Bunny Quinn photo 7"></div>
+          <!-- Permanent tile — always keep this as the last item, never delete it. -->
+          <div class="gallery-item gallery-item-soon">
+            <img src="assets/favicon.svg" alt="" class="gallery-soon-bg" aria-hidden="true">
+            <span class="gallery-soon-text">More sweets<br>coming soon&hellip;</span>
+          </div>
         </div>
         <button type="button" class="carousel-arrow carousel-next" id="galleryNext" aria-label="Next photo">&#8250;</button>
       </div>

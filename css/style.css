@@ -374,6 +374,33 @@ section { padding: 90px 0; }
   object-fit: cover;
 }
 
+.gallery-item-soon {
+  position: relative;
+  background: linear-gradient(135deg, var(--pink-bubblegum), var(--blue-powder));
+}
+
+.gallery-item-soon .gallery-soon-bg {
+  position: absolute;
+  inset: 0;
+  width: 62%;
+  height: 62%;
+  margin: auto;
+  object-fit: contain;
+  opacity: 0.4;
+}
+
+.gallery-item-soon .gallery-soon-text {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: var(--text-dark);
+  padding: 0 24px;
+}
+
 .gallery-item:hover { transform: scale(1.03); }
 
 .carousel-arrow {
