@@ -86,7 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function goToIndex(index) {
       currentIndex = (index + items.length) % items.length;
       isAnimating = true;
-      items[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      // Scroll the carousel's own scrollLeft directly (never scrollIntoView),
+      // since scrollIntoView can also drag the whole page vertically to
+      // bring the target into view if the carousel isn't fully on-screen.
+      const target = items[currentIndex];
+      const targetRect = target.getBoundingClientRect();
+      const carouselRect = carousel.getBoundingClientRect();
+      const delta = (targetRect.left + targetRect.width / 2) - (carouselRect.left + carouselRect.width / 2);
+      carousel.scrollTo({ left: carousel.scrollLeft + delta, behavior: 'smooth' });
       setActiveDot(currentIndex);
       clearTimeout(fallbackTimer);
       fallbackTimer = setTimeout(handleSettled, 1200);
@@ -99,18 +106,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduceMotion && items.length > 1) {
-      let autoRotate = setInterval(() => goToIndex(currentIndex + 1), 5000);
-      const pause = () => clearInterval(autoRotate);
-      const resume = () => {
-        clearInterval(autoRotate);
-        autoRotate = setInterval(() => goToIndex(currentIndex + 1), 5000);
+      let autoRotate = null;
+      let isTouching = false;
+      let isVisible = false;
+
+      const updateAutoRotate = () => {
+        const shouldRun = isVisible && !isTouching;
+        if (shouldRun && !autoRotate) {
+          autoRotate = setInterval(() => goToIndex(currentIndex + 1), 5000);
+        } else if (!shouldRun && autoRotate) {
+          clearInterval(autoRotate);
+          autoRotate = null;
+        }
       };
-      // Pause on the whole gallery block (not just the scroll area), so
-      // moving the mouse onto the arrow buttons or dots doesn't resume
-      // auto-rotate mid-interaction.
+
+      // Pause only while actively swiping/dragging the carousel — not on
+      // simple mouse hover, since the cursor can rest over the gallery
+      // incidentally (e.g. while scrolling) and mouseleave won't fire
+      // again until it's moved fully away, permanently stalling rotation.
+      carousel.addEventListener('touchstart', () => { isTouching = true; updateAutoRotate(); });
+      carousel.addEventListener('touchend', () => { isTouching = false; updateAutoRotate(); });
+
+      // Only rotate while the gallery is actually on-screen — no point
+      // animating photos nobody's looking at.
       const galleryBlock = carousel.closest('.gallery') || carousel;
-      ['mouseenter', 'touchstart', 'focusin'].forEach((evt) => galleryBlock.addEventListener(evt, pause));
-      ['mouseleave', 'touchend'].forEach((evt) => galleryBlock.addEventListener(evt, resume));
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            isVisible = entries[0].isIntersecting;
+            updateAutoRotate();
+          },
+          { threshold: 0.5 }
+        );
+        observer.observe(galleryBlock);
+      } else {
+        isVisible = true;
+        updateAutoRotate();
+      }
     }
   }
 
