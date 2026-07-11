@@ -481,6 +481,8 @@ section { padding: 90px 0; }
   border-color: var(--blue-powder-deep);
 }
 
+.link-hidden { display: none; }
+
 .link-icon {
   width: 26px;
   height: 26px;
